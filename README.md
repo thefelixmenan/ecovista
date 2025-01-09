@@ -1,7 +1,7 @@
-# EcoVista 🌱  
+# ecoVista 🌱  
 
 ## Description  
-EcoVista is a web platform designed to promote urban biodiversity and eco-friendly urban planning through stunning visualizations and interactive designs.
+ecoVista is a web platform designed to promote urban biodiversity and eco-friendly urban planning through stunning visualizations and interactive designs.
 
 ## Features  
 - 🌿 Interactive urban planning tools  
