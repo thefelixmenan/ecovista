@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ecoVista - Générateur d'images</title>
+    <link rel="stylesheet" href="../assets/css/generation.css">
+    <link rel="icon" href="./assets/media/images/logo_image.png" type="image/ico">
+</head>
+
+<header>
+    <div class="img-logo">
+        <a href="../index.html">
+            <img src="../assets/media/images/logo_horizontal.png" alt="Logo ecoVista">
+        </a>
+    </div>
+    <div class="links-container">
+        <nav>
+            <ul>
+                <li><a href="../index.html">À propos</a></li>
+            </ul>
+        </nav>
+        <a class="btn-register" href="../index.html">Déconnexion</a>
+    </div>
+</header>
+
+<body>
+    <div class="intro-container">
+        <article>
+            <h1>C'est parti pour la magie !</h1>
+            <p>Choisis une image à transformer ou écris ton prompt pour créer un paysage verdoyant époustouflant !</p>
+
+            <!-- Formulaire pour télécharger une image -->
+            <form id="upload-form" enctype="multipart/form-data">
+                <label for="file-input" class="btn-intro-gen" id="upload-button">
+                    <img src="../assets/media/icons/icon_upload.svg" alt="Icône d'importation">
+                    <p>Importer une image</p>
+                </label>
+                <input type="file" id="file-input" name="image" style="display: none;" accept="image/*">
+                <button type="button" class="btn-gen" id="submit-button">Envoyer</button>
+            </form>
+        </article>
+
+        <!-- Aperçu de l'image téléchargée -->
+        <img id="uploaded-image" src="" alt="Aperçu de l'image téléchargée" style="display: none; max-width: 300px;" />
+    </div>
+
+    <!-- Conteneur des résultats -->
+    <div class="result-container">
+        <!-- Images de plantes superposées dans les coins -->
+        <img class="plant-superpos leftup" src="../assets/media/images/image_generateur_left_up.PNG"
+            alt="Image d'une plante">
+        <img class="plant-superpos rightup" src="../assets/media/images/image_generateur_right_up.PNG"
+            alt="Image d'une plante">
+        <img class="plant-superpos rightdown" src="../assets/media/images/image_generateur_right_down.PNG"
+            alt="Image d'une plante">
+        <img class="plant-superpos leftdown" src="../assets/media/images/image_generateur_left_down.PNG"
+            alt="Image d'une plante">
+
+        <!-- Texte de résultat pendant la transformation -->
+        <p id="text-result">Un peu de magie en préparation, ça arrive bientôt ! ✨</p>
+
+        <!-- GIF de chargement -->
+        <img id="gif-loading" src="../assets/media/videos/gif_loading.gif" alt="gif loading" />
+
+        <!-- Conteneur pour les images générées -->
+        <div class="generated-images">
+            <!-- Nouvelle image générée après la transformation -->
+            <img class="new-image" id="new-image" src="" alt="Image créée par IA" />
+            <!-- Ici vous pouvez ajouter d'autres images générées si nécessaire -->
+        </div>
+
+        <!-- Nouveau texte après la transformation -->
+        <p class="new-text" id="new-text">Voilà ! La nature prend vie, admire ton chef-d'œuvre !
+        </p>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const submitButton = document.getElementById('submit-button');
+        const resultContainer = document.querySelector('.result-container');
+        const gifLoading = document.getElementById('gif-loading');
+        const uploadedImage = document.getElementById('uploaded-image');
+        const newImage = document.getElementById('new-image');
+        const newText = document.getElementById('new-text');
+        const textResult = document.getElementById('text-result');
+
+        let isFirstSubmit = true; // Variable pour suivre l'état de la soumission
+
+        // Prévisualisation de l'image sélectionnée
+        fileInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Soumission du formulaire via AJAX avec fetch
+        submitButton.addEventListener('click', async function () {
+            // Récupérer le fichier sélectionné
+            const file = fileInput.files[0];
+
+            // Vérifiez si un fichier a été sélectionné
+            if (!file) {
+                alert("Veuillez sélectionner une image à télécharger.");
+                return;
+            }
+
+            // Si c'est la première soumission
+            if (isFirstSubmit) {
+                // Afficher le GIF de chargement et masquer les autres éléments
+                gifLoading.style.display = 'block';
+                textResult.style.display = 'block';
+                newImage.style.display = 'none';
+                newText.style.display = 'none';
+
+                isFirstSubmit = false; // Passer à la seconde soumission
+
+            } else {
+                resultContainer.innerHTML = `
+                <img class="plant-superpos leftup" src="../assets/media/images/image_generateur_left_up.PNG" alt="Image d'une plante">
+                <img class="plant-superpos rightup" src="../assets/media/images/image_generateur_right_up.PNG" alt="Image d'une plante">
+                <img class="plant-superpos rightdown" src="../assets/media/images/image_generateur_right_down.PNG" alt="Image d'une plante">
+                <img class="plant-superpos leftdown" src="../assets/media/images/image_generateur_left_down.PNG" alt="Image d'une plante">
+                <p id="text-result">Un peu de magie en préparation, ça arrive bientôt ! ✨</p>
+                <img id="gif-loading" src="../assets/media/videos/gif_loading.gif" alt="gif loading" style="display: block;"/>
+            `
+            }
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const resultHtml = await response.text(); // Obtenir la réponse HTML
+                    gifLoading.style.display = 'none'; // Masquer le GIF après réception de la réponse
+
+                    // Injecter le contenu généré dans la div result-container
+                    resultContainer.innerHTML = resultHtml + `
+                        <img class="plant-superpos leftup" src="../assets/media/images/image_generateur_left_up.PNG" alt="Image d'une plante">
+                        <img class="plant-superpos rightup" src="../assets/media/images/image_generateur_right_up.PNG" alt="Image d'une plante">
+                        <img class="plant-superpos rightdown" src="../assets/media/images/image_generateur_right_down.PNG" alt="Image d'une plante">
+                        <img class="plant-superpos leftdown" src="../assets/media/images/image_generateur_left_down.PNG" alt="Image d'une plante">
+                        <p class="new-text" id="new-text">Voilà ! La nature prend vie, admire ton chef-d'œuvre !</p>`;
+
+                    // Masquer l'image uploadée
+                    uploadedImage.style.display = 'none'; // Masquer l'image uploadée
+
+                    // Récupérer l'image générée (supposons que c'est la première image)
+                    const generatedImage = resultContainer.querySelector('.new-image');
+
+                    // Afficher l'image générée
+                    if (generatedImage) {
+                        newImage.src = generatedImage.src; // Assigner la source de l'image
+                        newImage.style.display = 'block'; // Afficher l'image
+                    }
+
+                    // Afficher le nouveau texte
+                    newText.style.display = 'block';
+                } else {
+                    console.error('Erreur lors de la requête');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        });
+    </script>
+</body>
+
+<footer>
+    <div class="social-container">
+        <div id="logo-ecovista-footer">
+            <div>
+                <img src="../assets/media/images/logo_image.png" alt="Logotype ecoVista">
+            </div>
+        </div>
+        <div class="text-social">
+            <article>
+                <h3>Suivez-nous !</h3>
+                <p>Ne ratez rien de nos créations nature-tech, ça pousse vite !</p>
+            </article>
+        </div>
+        <div class="logos-social-container">
+            <a href="#">
+                <img src="../assets/media/icons/icon_twitter.svg" alt="Logo Twitter">
+            </a>
+            <a href="#">
+                <img src="../assets/media/icons/icon_facebook.svg" alt="Logo Facebook">
+            </a>
+            <a href="#">
+                <img src="../assets/media/icons/icon_instagram.svg" alt="Logo Instagram">
+            </a>
+        </div>
+    </div>
+
+    <div class="info-container-footer">
+        <article>
+            <h3>Nos coordonnées</h3>
+            <p>Venez nous voir à notre "petit coin de verdure" :</p>
+            <div class="info-line">
+                <img src="../assets/media/icons/icon_emplacement.svg" alt="Icône emplacement">
+                <p class="bold-text-info">1 Avenue des Arbres, 13090 Aix-en-Provence</p>
+            </div>
+            <br><br>
+            <p>Ou envoyez-nous un mail à : </p>
+            <div class="info-line">
+                <img src="../assets/media/icons/icon_mail.svg" alt="Icône mail">
+                <p class="bold-text-info"> hello@ecovista.com</p>
+            </div>
+        </article>
+        <img id="image-map" src="../assets/media/images/image_map_footer.png" alt="">
+    </div>
+
+    <div class="copyright-container">
+        <p class="copyright"><span id="bold-text-copyright">© 2024 EcoVista.</span> Tous droits réservés. Projet réalisé
+            dans le cadre du Hackathon Code24Sud 2024.</p>
+        <div class="links-footer top">
+            <a href="#">Politique de confidentialité</a>
+            <a href="#">Mentions légales</a>
+            <a href="#">Conditions générales d'utilisation</a>
+            <a href="#">Politique de cookies</a>
+        </div>
+        <div class="links-footer bottom">
+            <a href="#">Données personnelles</a>
+            <a href="#">Conditions de vente</a>
+            <a href="#">Contact et support</a>
+        </div>
+    </div>
+</footer>
+
+</html>

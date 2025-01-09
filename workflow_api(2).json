@@ -1,0 +1,131 @@
+{
+  "3": {
+    "inputs": {
+      "seed": 558183360115511,
+      "steps": 25,
+      "cfg": 12.8,
+      "sampler_name": "dpmpp_2m_sde",
+      "scheduler": "karras",
+      "denoise": 0.42,
+      "model": [
+        "4",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "46",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "4": {
+    "inputs": {
+      "ckpt_name": "model.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "6": {
+    "inputs": {
+      "text": "Add a lot of trees on the first plan in priority, with a strong emphasis on lush, verdant vegetation along the roadsides. Include vibrant tree canopies, abundant flowering trees, and lush grass roofs, (grass:1.3). Incorporate rich soil, decorative benches, and enhance the foreground with colorful flower beds full of diverse species. Focus on flourishing landscaping, sustainable plants, interactive seating areas, and community gardening spaces.Create a beautifully paved road designed for smooth vehicle circulation, incorporating high-quality cobblestones or decorative pavers that enhance the landscape aesthetics. Ensure that the creation of paths or roads is coherent with the overall landscape and purpose of the area. The road layout should be logical, following natural contours of the land where possible, and seamlessly integrating with existing structures and natural features.The overall layout should be symmetrical, inspired by classic French architecture, featuring elegant lines, balanced proportions, and harmonious arrangements of buildings and paths. The road should be wide enough for safe vehicle passage while maintaining a harmonious look with the surrounding nature. Add artistic separations for pedestrian pathways, ensuring a clear demarcation between roads and sidewalks. This can be achieved through features like raised curbs, decorative borders, or planters that visually and physically separate pedestrian areas from vehicular paths.Ensure the area significantly improves biodiversity and aesthetic appeal. Cover dirt roads and pathways with exposed aggregate concrete to avoid black asphalt and enhance the visual appeal of the landscape. Include beautiful paved sidewalks with flowering trees planted along them, arranged symmetrically to enhance the overall aesthetic.If there are no roads, create well-defined paths made of natural materials that blend seamlessly with the environment; if roads are present, enhance their surroundings with greenery, trees, and flowers to beautify the landscape. All paths and roads should have a clear purpose and destination, avoiding unnecessary meandering or dead-ends.Ensure all elements are symmetrically designed, contributing to a cohesive and elegant visual theme. Pay special attention to creating dense, lush vegetation on both sides of the roads or paths, with a variety of trees, shrubs, and plants to create a rich, green corridor effect. The design of paths and roads should complement and enhance the natural beauty of the landscape, rather than dominating it.y",
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "7": {
+    "inputs": {
+      "text": "embedding:easynegative, embedding:unrealisticdream, (deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime), text, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck, deformed buildings, distorted architecture, warped structures, do not modify or deform the structure of large buildings or vehicles, keep existing texts intact, maintain all architectural features and details.",
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "8": {
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "10": {
+    "inputs": {
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "11": {
+    "inputs": {
+      "image": "210611ee-24d0-4aca-99d0-d2d76cdd6de3-Elm_Hill_edited.jpg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage"
+  },
+  "44": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "46": {
+    "inputs": {
+      "pixels": [
+        "11",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode"
+    }
+  }
+}

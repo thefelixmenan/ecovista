@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="ecoVista">
+	<title>Bienvenue sur la plateforme ecoVista</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="./ico/ecovista.ico" type="image/ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="plugins/slick/css/slick.css" />
+	<link rel="stylesheet" type="text/css" href="plugins/slick/css/slick-theme.css" />
+	<link rel="stylesheet" href="css/common-v3.css">
+	<link rel="stylesheet" href="../assets/css/style-register.css">
+	<link rel="stylesheet" href="css/normalize.css">
+</head>
+<body>
+    <header class="header">
+        <div class="wrapper">
+            <nav>
+                <a href="index.html" class="logo">
+                    <img src="../assets/media/images/logo_horizontal.png" alt="Logo de ecoVista">
+                </a>
+                <ul>
+                    <li><a id="menu" href="../index.html" class="current">Accueil</a></li>
+                    <li><a id="menu" href="#about">À propos</a></li>
+                    <li><a id="menu" href="#histoire">Notre histoire</a></li>
+                    <li><a id="menu" href="#valeurs">Nos valeurs</a></li>
+                    <li><a id="create_button" href="#create_now">Créer maintenant</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="form_section">
+        <div class="form-container">
+            <h2>Inscrivez-vous</h2>
+            <form action="#" method="POST">
+                <div class="form">
+                    <label for="nom">Nom :</label>
+                    <input type="text" placeholder="Doe" required>
+                </div>
+                <div class="form">
+                    <label for="prenom">Prénom :</label>
+                    <input type="text" placeholder="John" required>
+                </div>
+                <div class="form">
+                    <label for="email">Adresse e-mail :</label>
+                    <input type="email" placeholder="john.doe@exemple.fr" required>
+                </div>
+                <div class="form">
+                    <div class="password-container">
+                        <label for="password">Mot de passe :</label>
+                        <input type="password" id="password" placeholder="••••••••••••••••••••" required>
+                        <span class="toggle-password" id="toggle-password" onclick="togglePasswordVisibility('password')">&#128065;</span> <!-- Unicode pour l'œil -->
+                    </div>
+                </div>
+                <div class="form">
+                <div class="password-container">
+                    <label for="password">Confirmation de mot de passe :</label>
+                    <input type="password" id="confirm-password" placeholder="••••••••••••••••••••" required>
+                    <span class="toggle-password" id="toggle-confirm-password" onclick="togglePasswordVisibility('confirm-password')">&#128065;</span>
+                </div>
+                </div>
+                <div class="button_form">
+                    <button type="submit">S'inscrire</button>
+                </div>
+                <div class="deja_compte">
+                    <p class="interro_compte">Avez-vous déjà un compte ? <a class="login" href="../pages/login.html">Se connecter</a></p>
+                </div>
+        </div>
+        <script>
+            function togglePasswordVisibility(inputId) {
+                const passwordInput = document.getElementById(inputId);
+                const togglePassword = inputId === 'password' ? document.getElementById('toggle-password') : document.getElementById('toggle-confirm-password');
+                
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text"; // Change le type pour voir le mot de passe
+                    togglePassword.innerHTML = "&#128064;"; // Unicode pour l'œil barré
+                } else {
+                    passwordInput.type = "password"; // Change le type pour masquer le mot de passe
+                    togglePassword.innerHTML = "&#128065;"; // Unicode pour l'œil
+                }
+            }
+        </script>
+    </main>
+	<script type="text/javascript" src="./js/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript" src="./js/api.js"></script>
+</body>
+
+</html>
